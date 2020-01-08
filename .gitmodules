@@ -1,0 +1,3 @@
+[submodule "Spitfire"]
+	path = spitfire
+	url = ssh://git@phabricator.magic3w.com/source/spitfire.git
