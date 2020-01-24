@@ -1,3 +1,6 @@
 [submodule "Spitfire"]
 	path = spitfire
 	url = ssh://git@phabricator.magic3w.com/source/spitfire.git
+[submodule "_SCSS"]
+	path = assets/scss/_
+	url = https://phabricator.magic3w.com/source/underscoreSCSS.git
