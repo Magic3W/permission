@@ -27,35 +27,37 @@
 class PermissionHelper 
 {
 	
-	public static function unlock($key, $id) {
-		$result = \GrantModel::GRANT_DENY;
+	public static function unlock($key, $ids) {
+		
+		if (!($ids instanceof \spitfire\core\Collection)) { $ids = collect($ids); }
+		
+		$result = \GrantModel::GRANT_INHERIT;
 		$pieces = explode('.', $key);
 		$resource = null;
-		$identity = db()->table('identity')->get('name', $id)->first();
+		$identities = $ids->each(function ($id) { return db()->table('identity')->get('name', $id)->first(); });
 		
 		while($pieces) {
 			$fragment = array_shift($pieces);
-			$query = db()->table('resource')->get('key', $fragment);
 			$parent = $resource;
-			
-			if ($resource) {
-				$query->where('parent', $parent);
-			}
+			$query = db()->table('resource')->get('key', $fragment)->where('parent', $parent);
 			
 			$resource = $query->first();
 			
 			if (!$resource) {
-				return $result;
+				return (int)$result;
 			}
 			
-			$grant = db()->table('grant')->get('identity', $identity)->where('resource', $resource)->first();
+			$result = $identities->each(function ($identity) use ($resource) { 
+				return db()->table('grant')->get('identity', $identity)->where('resource', $resource)->first();
+			})->filter()->reduce(function ($carry, $grant) {
+				if ($grant->grant == \GrantModel::GRANT_INHERIT) {
+					return $carry;
+				}
+				else {
+					return $grant->grant;
+				}
+			}, $result);
 			
-			if (!$grant || $grant->grant == \GrantModel::GRANT_INHERIT) {
-				continue;
-			}
-			else {
-				$result = $grant->grant;
-			}
 		}
 		
 		return (int)$result;

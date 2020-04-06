@@ -4,3 +4,6 @@
 [submodule "_SCSS"]
 	path = assets/scss/_
 	url = https://phabricator.magic3w.com/source/underscoreSCSS.git
+[submodule "M3js"]
+	path = assets/js/m3
+	url = https://phabricator.magic3w.com/source/M3JS.git

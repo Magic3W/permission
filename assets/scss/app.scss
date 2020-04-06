@@ -1,0 +1,97 @@
+/*
+The MIT License
+
+Copyright 2020 César de la Cal Bretschneider <cesar@magic3w.com>.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+/*
+    Created on : Feb 11, 2020, 12:17:30 PM
+    Author     : César de la Cal Bretschneider <cesar@magic3w.com>
+*/
+
+@import "_/_.scss";
+@import "_color.scss";
+@import "_text.scss";
+@import "ui/_dropdown.scss";
+
+html, body {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+html {
+	background-color: #eef1f6;
+	color: #23282C;
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+h1 {
+	color: $grey200;
+	margin: 0;
+}
+
+h2 {
+	color: $grey400;
+}
+
+.auto-extend {
+	flex: 1 0;
+}
+
+footer {
+	padding: 40px;
+}
+
+.material {
+	background: #FFF;
+	border-radius: 2px;
+	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.15), -1px -1px 5px rgba(0, 0, 0, 0.07);
+	padding: 2rem 3rem;
+}
+
+.separator {
+	border-top: solid 1px $grey900;
+}
+
+ul.pagination {
+	text-align: center;
+	padding: 0;
+	
+	li {
+		display: inline-block;
+		
+		a {
+			padding: .2rem 1rem;
+			color: $grey300;
+			text-decoration: none;
+			
+			&.disabled, &.unavailable {
+				color: $grey700;
+			}
+		}
+		
+	}
+}

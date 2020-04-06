@@ -48,9 +48,15 @@ class ResourceModel extends Model
 		$schema->index($schema->parent, $schema->key);
 	}
 	
-	public function unlock($identity) {
+	public function mnemonic() {
 		$db = $this->getTable()->getDb();
-		
+		return $db->table('mnemonic')->get('type', 'resource')->where('id', $this->_id)->first();
 	}
 	
+	public function path() {
+		if ($this->parent) { $path = $this->parent->path() . '.'; }
+		else { $path = ''; }
+		
+		return $path . $this->key;
+	}
 }

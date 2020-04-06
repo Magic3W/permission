@@ -27,6 +27,7 @@ class BaseController extends Controller
 	 */
 	protected $token;
 	protected $user;
+	protected $authapp;
 	
 	public function _onload() {
 		$s = $this->session = Session::getInstance();
@@ -40,13 +41,19 @@ class BaseController extends Controller
 		$this->token = $t?                          $t                       : null;
 		
 		#Fetch the user.
-		$this->user  = $t ? $c->get('token_' . $this->token->getId(), function () use ($t) { 
+		$this->user  = $t && $t instanceof Token? $c->get('token_' . $this->token->getId(), function () use ($t) { 
 			return $t->isAuthenticated()? $t->getTokenInfo()->user : null; 
 		}) : null;
+		
+		if (isset($_GET['signature'])) {
+			$_auth = $this->sso->authApp($_GET['signature']);
+			$this->authapp = $_auth->getRemote()->getId();
+		}
 		
 		
 		$this->view->set('authUser', $this->user);
 		$this->view->set('authSSO', $this->sso);
+		$this->view->set('sso', $this->sso);
 		$this->view->set('authToken', $this->token);
 		
 	}

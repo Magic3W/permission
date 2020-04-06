@@ -24,3 +24,20 @@
  * THE SOFTWARE.
  */
 
+class IdentityController extends BaseController
+{
+	
+	public function index() {
+		
+		if(!\permission\PermissionHelper::unlock('_resource._identity', '@' . $this->user->id)) {
+			throw new PublicException('Not allowed', 403);
+		}
+		
+		$query = db()->table('identity')->getAll();
+		$pages = new spitfire\storage\database\pagination\Paginator($query);
+		
+		$this->view->set('pages', $pages);
+		$this->view->set('identities', $pages->records());
+	}
+	
+}

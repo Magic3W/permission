@@ -1,8 +1,5 @@
 <?php
 
-use spitfire\Model;
-use spitfire\storage\database\Schema;
-
 /* 
  * The MIT License
  *
@@ -27,29 +24,7 @@ use spitfire\storage\database\Schema;
  * THE SOFTWARE.
  */
 
-/**
- * Identities are an inferred data type. Just to reduce data usage by repeating 
- * the same string over and over.
- * 
- * @property string $name The name of the identity
- * 
- * @author César de la Cal Bretschneider <cesar@magic3w.com>
- */
-class IdentityModel extends Model
+class MnemonicController extends BaseController
 {
 	
-	/**
-	 * 
-	 * @param Schema $schema
-	 * @return Schema
-	 */
-	public function definitions(Schema $schema) {
-		$schema->name = new StringField(150);
-	}
-	
-	public function mnemonic() {
-		$db = $this->getTable()->getDb();
-		return $db->table('mnemonic')->get('type', 'identity')->where('id', $this->_id)->first();
-	}
-
 }

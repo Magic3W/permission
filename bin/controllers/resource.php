@@ -1,5 +1,9 @@
 <?php
 
+use permission\PermissionHelper;
+use spitfire\exceptions\HTTPMethodException;
+use spitfire\exceptions\PublicException;
+
 /* 
  * The MIT License
  *
@@ -34,13 +38,15 @@ class ResourceController extends BaseController
 {
 	
 	public function _onload() {
+		parent::_onload();
+		
 		/*
 		 * This endpoints are restricted to the adminsitrators of the application
 		 * only. Applications can use the grant:: methods to explore and perform 
 		 * all the management they wish.
 		 */
 		if (!$this->user) {
-			//throw new PublicException('Authentication required', 403);
+			$this->response->setBody('Redirecting...')->getHeaders()->redirect(url('user', 'login'));
 		}
 	}
 	
@@ -54,8 +60,13 @@ class ResourceController extends BaseController
 		$query = db()->table('resource')->get('parent', $parent);
 		$resources = $query->all();
 		
+		$next = $parent;
+		$ancestors = collect($next);
+		while ($next = $next->parent) { $ancestors->push($next); }
+		
 		$this->view->set('parent', $parent);
 		$this->view->set('resources', $resources);
+		$this->view->set('ancestors', $ancestors->reverse());
 	}
 	
 	/**
@@ -65,27 +76,25 @@ class ResourceController extends BaseController
 	 */
 	public function create() {
 		
-		/*
-		 * Check if the user has the right to manage the permissions for this resource
-		 */
-		if (!PermissionHelper::unlock('_resource.' . $_POST['key'], '@' . $this->user->getId())) {
-			throw new PublicException('Insufficient permissions', 403);
-		}
 		
 		try {
 			if (!$this->request->isPost()) { throw new HTTPMethodException('Not Posted'); }
+			
+			/*
+			 * Check if the user has the right to manage the permissions for this resource
+			 */
+			if (!PermissionHelper::unlock('_resource.' . $_POST['key'], '@' . $this->user->id)) {
+				throw new PublicException('Insufficient permissions', 403);
+			}
 			
 			$pieces = explode('.', $_POST['key']);
 			$resource = null;
 
 			while($pieces) {
 				$key = array_shift($pieces);
-				$query = db()->table('resource')->get('key', $key);
 				$parent = $resource;
-
-				if ($resource) {
-					$query->where('parent', $parent);
-				}
+				
+				$query = db()->table('resource')->get('key', $key)->where('parent', $parent);
 
 				$resource = $query->first();
 
@@ -99,7 +108,7 @@ class ResourceController extends BaseController
 
 			$this->view->set('resource', $resource);
 		} 
-		catch (spitfire\exceptions\HTTPMethodException$e) {
+		catch (HTTPMethodException$e) {
 			/*The user didn't post the data, show a form*/
 		}
 	}

@@ -27,29 +27,25 @@ use spitfire\storage\database\Schema;
  * THE SOFTWARE.
  */
 
-/**
- * Identities are an inferred data type. Just to reduce data usage by repeating 
- * the same string over and over.
- * 
- * @property string $name The name of the identity
- * 
- * @author César de la Cal Bretschneider <cesar@magic3w.com>
- */
-class IdentityModel extends Model
+class MnemonicModel extends Model
 {
-	
-	/**
+	/*
+	 * Descriptions are just weakly attached to either resources or identities,
+	 * and allow the system to display helpful information to the user if this
+	 * is wanted.
 	 * 
-	 * @param Schema $schema
-	 * @return Schema
+	 * This for example allows to replace the '@1' in an identity with 'Csharp',
+	 * or ':1' with administrators, or the resource 'app1234' with 'Ping',  
+	 * which makes it way more accessible to humans.
 	 */
 	public function definitions(Schema $schema) {
-		$schema->name = new StringField(150);
-	}
-	
-	public function mnemonic() {
-		$db = $this->getTable()->getDb();
-		return $db->table('mnemonic')->get('type', 'identity')->where('id', $this->_id)->first();
+		
+		$schema->type = new EnumField('resource', 'identity');
+		$schema->id   = new IntegerField(true);
+		$schema->caption = new StringField(50);
+		$schema->description = new TextField();
+		
+		$schema->index($schema->type, $schema->id);
 	}
 
 }
