@@ -40,7 +40,7 @@ class IdentityController extends BaseController
 	 * This endpoint allows a user to define a menmonic for a resource. This makes 
 	 * it easier for the user to manage said mnemonics.
 	 * 
-	 * @validate >> POST#caption (string length[3, 500])
+	 * @validate >> POST#caption (string length[3, 50])
 	 * @validate >> POST#description (string length[3, 500])
 	 * 
 	 * @param ResourceModel $resource The resource that should receive the metadata
@@ -74,10 +74,17 @@ class IdentityController extends BaseController
 			$mnemonic->description = $_POST['description'];
 			$mnemonic->store();
 			
+			if ($_GET['returnto']) {
+				$this->response->setBody('Redirect')->getHeaders()->redirect($_GET['returnto']);
+			}
+			
 			$this->view->set('result', 'success');
 		} 
 		catch (HTTPMethodException$ex) {
 			//Show the form
+		}
+		catch (ValidationException$ex) {
+			$this->view->set('messages', $ex->getResult());
 		}
 		
 		$this->view->set('identity', $identity);

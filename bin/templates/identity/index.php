@@ -16,7 +16,7 @@
 				<div class="span l3">
 					<div class="spacer medium"></div>
 					<?php foreach ($identities as $identity): ?>
-					<a class="text:grey-400 no-decoration" href="<?= url('mnemonic', 'identity', 'set', $identity->_id) ?>">
+					<a class="text:grey-400 no-decoration" href="<?= url('mnemonic', 'identity', 'set', $identity->_id, ['returnto' => strval(url('identity'))]) ?>">
 						<?= $identity->mnemonic()? $identity->mnemonic()->caption : $identity->name ?>
 						<span class="text:grey-600">(<?= $identity->name; ?>)</span>
 					</a>

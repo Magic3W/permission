@@ -73,10 +73,17 @@ class ResourceController extends BaseController
 			$mnemonic->description = $_POST['description'];
 			$mnemonic->store();
 			
+			if ($_GET['returnto']) {
+				$this->response->setBody('Redirect')->getHeaders()->redirect($_GET['returnto']);
+			}
+			
 			$this->view->set('result', 'success');
 		} 
 		catch (HTTPMethodException$ex) {
 			//Show the form
+		}
+		catch (ValidationException$ex) {
+			$this->view->set('messages', $ex->getResult());
 		}
 		
 		$this->view->set('resource', $resource);

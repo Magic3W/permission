@@ -1,6 +1,22 @@
 
 <div class="spacer medium"></div>
 
+<?php if (isset($messages) && !empty($messages)): ?>
+
+	<?php foreach($messages as $message): ?>
+	<div class="row l1">
+		<div class="span l1">
+			<div class="message error">
+				<div><?= __($message->getMessage()) ?></div>
+			</div>
+		</div>
+	</div>
+	<div class="spacer small"></div>
+	<?php endforeach; ?>
+
+<div class="spacer small"></div>
+<?php endif; ?>
+
 <div class="row l1">
 	<div class="span l1">
 		<h1>Editing mnemonic for <?= $identity->name ?></h1>
@@ -19,9 +35,9 @@
 						<div class="spacer small"></div>
 						<div class="row l1">
 							<div class="span l1">
-								<input class="frm-ctrl" type="text" placeholder="Caption" name="caption" value="<?= $mnemonic? __($mnemonic->caption) : '' ?>">
+								<input class="frm-ctrl" type="text" placeholder="Caption" name="caption" value="<?= $mnemonic? __($mnemonic->caption) : '' ?>" required minlength="3" maxlength="50">
 								<div class="spacer small"></div>
-								<textarea class="frm-ctrl" placeholder="Description" name="description"><?= $mnemonic? __($mnemonic->description) : '' ?></textarea>
+								<textarea class="frm-ctrl" placeholder="Description" name="description" required minlength="3" maxlength="500"><?= $mnemonic? __($mnemonic->description) : '' ?></textarea>
 								<div class="spacer small"></div>
 								<div class="align-right">
 									<input class="button" type="submit">

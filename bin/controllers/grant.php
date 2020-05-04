@@ -171,8 +171,7 @@ class GrantController extends BaseController
 			 * 
 			 */
 			$resources = collect($_POST['resources']);
-			$identities = collect($_POST['identities']);
-			$identities->push('*');
+			$identities = collect(array_merge(['*'], $_POST['identities']));
 
 			$results = $resources->each(function ($resource) use ($identities) {
 				return PermissionHelper::unlock($resource, $identities);

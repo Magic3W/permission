@@ -24,4 +24,4 @@
  * THE SOFTWARE.
  */
 
-echo json_encode(['success' => true]);
+echo json_encode(['success' => !isset($messages) || empty($messages)]);

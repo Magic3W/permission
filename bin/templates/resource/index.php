@@ -12,7 +12,7 @@
 			<?= $parent->mnemonic()? $parent->mnemonic()->caption : $parent->key ?> 
 			
 			<?php if(!$parent || \permission\PermissionHelper::unlock('_resource.' . $parent->path(), '@' . $authUser->id)): ?>
-			<a href="<?= url('mnemonic', 'resource', 'set', $parent->_id) ?>" class="button small outline">Edit</a>
+			<a href="<?= url('mnemonic', 'resource', 'set', $parent->_id, ['returnto' => strval(url('resource', 'index', $parent->_id))]) ?>" class="button small outline">Edit</a>
 			<?php endif; ?>
 		</h1>
 	</div>

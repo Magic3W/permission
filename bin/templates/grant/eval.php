@@ -57,6 +57,8 @@
 						<div class="span l1 s1">
 							<?php if ($v == -1): ?>
 							<span style="color: #900">Denied</span>
+							<?php elseif ($v == 0): ?>
+							<span style="color: #666">Undefined</span>
 							<?php else: ?>
 							<span style="color: #090">Granted</span>
 							<?php endif; ?>
