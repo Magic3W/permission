@@ -1,8 +1,5 @@
 <?php
 
-use spitfire\exceptions\PublicException;
-use spitfire\exceptions\PrivateException;
-use m3w\IOException;
 
 /**
  * Prebuilt test controller. Use this to test all the components built into
@@ -12,6 +9,12 @@ use m3w\IOException;
 class HomeController extends Controller
 {
 	public function index() {
+		
+		if (!db()->table('resource')->get('parent', null)->where('key', '_resource')->first()) {
+			$this->response->setBody('Redirect')->getHeaders()->redirect(url('setup'));
+			return;
+		}
+		
 		/*
 		 * Currently there's nothing on the homepage that is worth mentioning.
 		 * We're just redirecting to the appropriate resource
