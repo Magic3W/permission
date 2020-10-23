@@ -1,5 +1,15 @@
+<?php 
+	# In the event of the application being already posted to and having created
+   # a new grant, the endpoint should redirect a user to the resource so
+	# so they can immediately work with it.
 
-<div class="spacer huge"></div>
+	if (isset($grant)) {
+		current_context()->response->getHeaders()->redirect(URLUtil::isLocal($_GET['returnto'])?: url('resource', 'index', $grant->resource->_id));
+		echo 'Redirecting...';
+		return;
+	}
+	
+?><div class="spacer huge"></div>
 
 <div class="row l1">
 	<div class="span l1">

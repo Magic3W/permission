@@ -1,5 +1,15 @@
+<?php 
+	# In the event of the application being already posted to and having created
+   # a new resource, the endpoint should redirect a user to the new resource so
+	# so they can immediately work with it.
 
-<div class="spacer large"></div>
+	if (isset($updated)) {
+		current_context()->response->getHeaders()->redirect(URLUtil::isLocal($_GET['returnto'])?: url('resource', 'index', $grant->resource->_id));
+		echo 'Redirecting...';
+		return;
+	}
+	
+?><div class="spacer large"></div>
 
 <div class="row l1">
 	<div class="span l1">

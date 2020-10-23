@@ -202,6 +202,7 @@ class GrantController extends BaseController
 			
 			$grant->grant = $_POST['grant'];
 			$grant->store();
+			$this->view->set('updated', true);
 		} 
 		catch (spitfire\exceptions\HTTPMethodException$e) {
 			/*Show the form*/

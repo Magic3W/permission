@@ -45,7 +45,7 @@ class ResourceController extends BaseController
 		 * only. Applications can use the grant:: methods to explore and perform 
 		 * all the management they wish.
 		 */
-		if (!$this->user) {
+		if (!$this->user && !$this->authapp) {
 			$this->response->setBody('Redirecting...')->getHeaders()->redirect(url('user', 'login'));
 		}
 	}
@@ -80,10 +80,15 @@ class ResourceController extends BaseController
 		try {
 			if (!$this->request->isPost()) { throw new HTTPMethodException('Not Posted'); }
 			
+			$identities = [];
+			
+			if ($this->authapp)  { $identities = [':' . $this->authapp]; }
+			elseif ($this->user) { $identities = ['@' . $this->user->id]; }
+			
 			/*
 			 * Check if the user has the right to manage the permissions for this resource
 			 */
-			if (!PermissionHelper::unlock('_resource.' . $_POST['key'], '@' . $this->user->id)) {
+			if (!PermissionHelper::unlock('_resource.' . $_POST['key'], $identities)) {
 				throw new PublicException('Insufficient permissions', 403);
 			}
 			
