@@ -1,8 +1,9 @@
 <?php
 
 use permission\PermissionHelper;
-use spitfire\exceptions\PublicException;
+use permission\PermissionTestResult;
 use spitfire\exceptions\HTTPMethodException;
+use spitfire\exceptions\PublicException;
 
 /* 
  * The MIT License
@@ -35,6 +36,7 @@ class GrantController extends BaseController
 	//#group
 	//:app
 	//~role
+	//$relation: How the user is connected to the resource (like &owner or &creator)
 	//* world
 	
 	public function create() {
@@ -103,7 +105,7 @@ class GrantController extends BaseController
 			
 			$this->view->set('grant', $grant);
 		} 
-		catch (spitfire\exceptions\HTTPMethodException$e) {}
+		catch (HTTPMethodException$e) {}
 	}
 	
 	public function allow(GrantModel$grant) {
@@ -163,21 +165,38 @@ class GrantController extends BaseController
 		 * Check if the user or an application is available for checking.
 		 */
 		if (!$this->authapp && !$this->user) {
-			throw new PublicException('Permission denied', 403);
+			//throw new PublicException('Permission denied', 403);
 		}
 		
 		if ($this->request->isPost()) {
-			/*
-			 * 
-			 */
-			$resources = collect($_POST['resources']);
-			$identities = collect(array_merge(['*'], $_POST['identities']));
-
-			$results = $resources->each(function ($resource) use ($identities) {
-				return PermissionHelper::unlock($resource, $identities);
-			});
 			
-			$this->view->set('result', array_combine($resources->toArray(), $results->toArray()));
+			$_ret = [];
+			
+			/*
+			 * Loop over the query that was sent.
+			 */
+			foreach ($_POST as $index => $query) {
+				$resources = collect($query['resources']);
+				$identities = collect($query['identities']);
+				
+				$result = $identities->reduce(function (PermissionTestResult $carry = null, $identity) use ($resources) {
+					
+					if ($carry && $carry->getResult() !== GrantModel::GRANT_INHERIT) { return $carry; }
+					
+					$results = PermissionHelper::unlockAll($resources, $identity);
+					$top = $results
+						->reduce(function (PermissionTestResult $c = null, PermissionTestResult $e) {
+							if (!$c) { return $e; }
+							else { return $c->compare($e); }
+						}, null);
+						
+					return $top;
+				}, null);
+				
+				$_ret[$index] = $result;
+			}
+			
+			$this->view->set('result', $_ret);
 		}
 		
 		
@@ -187,7 +206,7 @@ class GrantController extends BaseController
 	 * 
 	 * @param GrantModel $grant
 	 */
-	public function edit(GrantModel$grant) {
+	public function edit(GrantModel$grant = null) {
 		
 		
 		$appid = $this->authapp? $this->authapp->getSrc()->getId() : '';
@@ -204,7 +223,7 @@ class GrantController extends BaseController
 			$grant->store();
 			$this->view->set('updated', true);
 		} 
-		catch (spitfire\exceptions\HTTPMethodException$e) {
+		catch (HTTPMethodException$e) {
 			/*Show the form*/
 		}
 		

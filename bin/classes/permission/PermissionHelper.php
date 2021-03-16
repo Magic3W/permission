@@ -1,5 +1,10 @@
 <?php namespace permission;
 
+use GrantModel;
+use spitfire\core\Collection;
+use function collect;
+use function db;
+
 /* 
  * The MIT License
  *
@@ -27,14 +32,24 @@
 class PermissionHelper 
 {
 	
-	public static function unlock($key, $ids) {
+	public static function unlock($key, $id) : PermissionTestResult
+	{
 		
-		if (!($ids instanceof \spitfire\core\Collection)) { $ids = collect($ids); }
 		
-		$result = \GrantModel::GRANT_INHERIT;
+		/**
+		 * These are defaults, and therefore, the specificity is always 0. This means
+		 * that the rules are as generic as they get
+		 */
+		if ($id === true  || $id === 'true')  { return new PermissionTestResult(GrantModel::GRANT_ALLOW, null); }
+		if ($id === false || $id === 'false') { return new PermissionTestResult(GrantModel::GRANT_DENY, null); }
+		if ($id === null  || $id === 'null')  { return new PermissionTestResult(GrantModel::GRANT_INHERIT, null); }
+		
+		$result = GrantModel::GRANT_INHERIT;
 		$pieces = explode('.', $key);
 		$resource = null;
-		$identities = $ids->each(function ($id) { return db()->table('identity')->get('name', $id)->first(); });
+		$identity = db()->table('identity')->get('name', $id)->first();
+		
+		$specificity = null;
 		
 		while($pieces) {
 			$fragment = array_shift($pieces);
@@ -44,22 +59,34 @@ class PermissionHelper
 			$resource = $query->first();
 			
 			if (!$resource) {
-				return (int)$result;
+				return new PermissionTestResult((int)$result, $specificity);
 			}
 			
-			$result = $identities->each(function ($identity) use ($resource) { 
-				return db()->table('grant')->get('identity', $identity)->where('resource', $resource)->first();
-			})->filter()->reduce(function ($carry, $grant) {
-				if ($grant->grant == \GrantModel::GRANT_INHERIT) {
-					return $carry;
-				}
-				else {
-					return $grant->grant;
-				}
-			}, $result);
+			$grant = db()->table('grant')->get('identity', $identity)->where('resource', $resource)->first();
+			
+			if ($grant) {
+				if ($grant->grant != GrantModel::GRANT_INHERIT) { $result = $grant->grant; }
+				
+				/**
+				 * The specificity equals the depth of the resource. If we're looking up
+				 * the string "app123.posts.create" the specificity of the rule is 1 if 
+				 * the rule was applied to app123, 2 if it was applied to app123.posts,
+				 * etc.
+				 * 
+				 * This allows clients to query rules, determining the that more elaborate
+				 * rules are prioritized.
+				 */
+				$specificity = $resource;
+			}
 			
 		}
 		
-		return (int)$result;
+		return new PermissionTestResult((int)$result, $specificity);
+	}
+	
+	public function unlockAll($key, $ids) 
+	{
+		
+		return $key->each(function ($key) use ($ids) { return self::unlock($key, $ids); });
 	}
 }

@@ -13,10 +13,10 @@
 					<form method="POST" action="">
 						<div class="row l2">
 							<div class="span l1" id="resources">
-								<input type="text" name="resources[]" class="frm-ctrl" placeholder="Resource...">
+								<input type="text" name="0[resources][]" class="frm-ctrl" placeholder="Resource...">
 							</div>
 							<div class="span l1" id="identities">
-								<input type="text" name="identities[]" class="frm-ctrl" placeholder="Identity...">
+								<input type="text" name="0[identities][]" class="frm-ctrl" placeholder="Identity...">
 							</div>
 						</div>
 						<div class="spacer small"></div>
@@ -34,7 +34,7 @@
 	</div>
 </div>
 
-<?php if (isset($result)): ?>
+<?php if (isset($result) && isset($result[0])): ?>
 <div class="spacer large"></div>
 
 <div class="row l1">
@@ -47,17 +47,17 @@
 				<div class="span l3">
 					
 					<div class="spacer medium"></div>
-					<?php foreach ($result as $k => $v): ?>
-					<?php $resource = permission\ResourceHelper::get($k); 	?>
+					<pre>
+					</pre>
+					<?php $v = $result[0]; ?>
 					<div class="row l3 s3">
 						<div class="span l2 s2">
-							<span class="text:grey-200"><?= $resource && $resource->mnemonic()? $resource->mnemonic()->caption : $k ?></span>
-							<span class="text:grey-500"><?= $resource && $resource->mnemonic()? $k : '' ?></span>
+							<span class="text:grey-200"><?= $result[0]->getPath() ?></span>
 						</div>
 						<div class="span l1 s1">
-							<?php if ($v == -1): ?>
+							<?php if ($v->getResult() == -1): ?>
 							<span style="color: #900">Denied</span>
-							<?php elseif ($v == 0): ?>
+							<?php elseif ($v->getResult() == 0): ?>
 							<span style="color: #666">Undefined</span>
 							<?php else: ?>
 							<span style="color: #090">Granted</span>
@@ -65,7 +65,6 @@
 						</div>
 					</div>
 					<div class="spacer small"></div>
-					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>
@@ -79,7 +78,7 @@
 		var input = document.createElement('input');
 		input.type = 'text';
 		input.placeholder = 'Identity...';
-		input.name = 'identities[]';
+		input.name = '0[identities][]';
 		input.className = 'frm-ctrl';
 		
 		document.getElementById('identities').appendChild(input);
@@ -91,7 +90,7 @@
 		var input = document.createElement('input');
 		input.type = 'text';
 		input.placeholder = 'Resource...';
-		input.name = 'resources[]';
+		input.name = '0[resources][]';
 		input.className = 'frm-ctrl';
 		
 		document.getElementById('resources').appendChild(input);
