@@ -1,0 +1,342 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property BaseController\\:\\:\\$sso \\(auth\\\\SSO\\) does not accept auth\\\\SSOCache\\.$#"
+			count: 1
+			path: bin/classes/BaseController.php
+
+		-
+			message: "#^Call to an undefined method auth\\\\SSOCache\\:\\:authApp\\(\\)\\.$#"
+			count: 1
+			path: bin/classes/BaseController.php
+
+		-
+			message: "#^Variable \\$signatures might not be defined\\.$#"
+			count: 1
+			path: bin/classes/auth/AppAuthentication.php
+
+		-
+			message: "#^Call to method getPath\\(\\) on an unknown class auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Call to method getPort\\(\\) on an unknown class auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Call to method getProtocol\\(\\) on an unknown class auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Call to method getServer\\(\\) on an unknown class auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Call to method getUser\\(\\) on an unknown class auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Call to method getPassword\\(\\) on an unknown class auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Instanceof between string\\|null and auth\\\\Token will always evaluate to false\\.$#"
+			count: 1
+			path: bin/classes/auth/SSO.php
+
+		-
+			message: "#^Variable \\$http_response_header in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
+			path: bin/classes/auth/Token.php
+
+		-
+			message: "#^Parameter \\$url of method auth\\\\URLReflection\\:\\:fromURL\\(\\) has invalid typehint type auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/URLReflection.php
+
+		-
+			message: "#^Return typehint of method auth\\\\URLReflection\\:\\:fromURL\\(\\) has invalid type auth\\\\Settings\\.$#"
+			count: 1
+			path: bin/classes/auth/URLReflection.php
+
+		-
+			message: "#^Class auth\\\\URLReflection constructor invoked with 8 parameters, 7 required\\.$#"
+			count: 1
+			path: bin/classes/auth/URLReflection.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: bin/classes/signature/Signature.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: bin/classes/signature/Signature.php
+
+		-
+			message: "#^Parameter \\#5 \\$context of class signature\\\\Signature constructor expects string, array\\<int, string\\> given\\.$#"
+			count: 1
+			path: bin/classes/signature/Signature.php
+
+		-
+			message: "#^Parameter \\#7 \\$salt of class signature\\\\Signature constructor expects string\\|null, signature\\\\Checksum given\\.$#"
+			count: 1
+			path: bin/classes/signature/Signature.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 3
+			path: bin/controllers/grant.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 3
+			path: bin/controllers/grant.php
+
+		-
+			message: "#^Access to an undefined property ResourceModel\\:\\:\\$_id\\.$#"
+			count: 2
+			path: bin/controllers/grant.php
+
+		-
+			message: "#^Static call to instance method permission\\\\PermissionHelper\\:\\:unlockAll\\(\\)\\.$#"
+			count: 1
+			path: bin/controllers/grant.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: bin/controllers/identity.php
+
+		-
+			message: "#^Class publicException referenced with incorrect case\\: PublicException\\.$#"
+			count: 1
+			path: bin/controllers/identity.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$resource$#"
+			count: 1
+			path: bin/controllers/mnemonic/identity.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 4
+			path: bin/controllers/mnemonic/identity.php
+
+		-
+			message: "#^Access to an undefined property IdentityModel\\:\\:\\$_id\\.$#"
+			count: 4
+			path: bin/controllers/mnemonic/identity.php
+
+		-
+			message: "#^Access to an undefined property mnemonic\\\\IdentityController\\:\\:\\$validation\\.$#"
+			count: 2
+			path: bin/controllers/mnemonic/identity.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 4
+			path: bin/controllers/mnemonic/resource.php
+
+		-
+			message: "#^Access to an undefined property ResourceModel\\:\\:\\$_id\\.$#"
+			count: 4
+			path: bin/controllers/mnemonic/resource.php
+
+		-
+			message: "#^Access to an undefined property mnemonic\\\\ResourceController\\:\\:\\$validation\\.$#"
+			count: 2
+			path: bin/controllers/mnemonic/resource.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: bin/controllers/resource.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: bin/controllers/resource.php
+
+		-
+			message: "#^Access to an undefined property ResourceModel\\:\\:\\$removed\\.$#"
+			count: 1
+			path: bin/controllers/resource.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: bin/controllers/setup.php
+
+		-
+			message: "#^Access to undefined constant GrantModel\\:\\:GRANT_ALOW\\.$#"
+			count: 1
+			path: bin/directors/grant.php
+
+		-
+			message: "#^Access to an undefined property ImportDirector\\:\\:\\$parameters\\.$#"
+			count: 1
+			path: bin/directors/import.php
+
+		-
+			message: "#^Variable \\$allow might not be defined\\.$#"
+			count: 2
+			path: bin/directors/import.php
+
+		-
+			message: "#^Variable \\$message might not be defined\\.$#"
+			count: 1
+			path: bin/error_pages/500.php
+
+		-
+			message: "#^Variable \\$moreInfo might not be defined\\.$#"
+			count: 1
+			path: bin/error_pages/500.php
+
+		-
+			message: "#^Variable \\$message might not be defined\\.$#"
+			count: 1
+			path: bin/error_pages/default.php
+
+		-
+			message: "#^Variable \\$moreInfo might not be defined\\.$#"
+			count: 1
+			path: bin/error_pages/default.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$appid\\.$#"
+			count: 1
+			path: bin/models/application.php
+
+		-
+			message: "#^Access to private property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$name\\.$#"
+			count: 1
+			path: bin/models/application.php
+
+		-
+			message: "#^Method ApplicationModel\\:\\:definitions\\(\\) should return spitfire\\\\storage\\\\database\\\\Schema but return statement is missing\\.$#"
+			count: 1
+			path: bin/models/application.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$resource\\.$#"
+			count: 1
+			path: bin/models/grant.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$identity\\.$#"
+			count: 1
+			path: bin/models/grant.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$grant\\.$#"
+			count: 1
+			path: bin/models/grant.php
+
+		-
+			message: "#^Method GrantModel\\:\\:definitions\\(\\) should return spitfire\\\\storage\\\\database\\\\Schema but return statement is missing\\.$#"
+			count: 1
+			path: bin/models/grant.php
+
+		-
+			message: "#^Access to private property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$name\\.$#"
+			count: 1
+			path: bin/models/identity.php
+
+		-
+			message: "#^Method IdentityModel\\:\\:definitions\\(\\) should return spitfire\\\\storage\\\\database\\\\Schema but return statement is missing\\.$#"
+			count: 1
+			path: bin/models/identity.php
+
+		-
+			message: "#^Access to an undefined property IdentityModel\\:\\:\\$_id\\.$#"
+			count: 1
+			path: bin/models/identity.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$event\\.$#"
+			count: 1
+			path: bin/models/log.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$blame\\.$#"
+			count: 1
+			path: bin/models/log.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$created\\.$#"
+			count: 1
+			path: bin/models/log.php
+
+		-
+			message: "#^Method LogModel\\:\\:definitions\\(\\) should return spitfire\\\\storage\\\\database\\\\Schema but return statement is missing\\.$#"
+			count: 1
+			path: bin/models/log.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$type\\.$#"
+			count: 1
+			path: bin/models/mnemonic.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$id\\.$#"
+			count: 1
+			path: bin/models/mnemonic.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$caption\\.$#"
+			count: 1
+			path: bin/models/mnemonic.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$description\\.$#"
+			count: 1
+			path: bin/models/mnemonic.php
+
+		-
+			message: "#^Method MnemonicModel\\:\\:definitions\\(\\) should return spitfire\\\\storage\\\\database\\\\Schema but return statement is missing\\.$#"
+			count: 1
+			path: bin/models/mnemonic.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$parent\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$key\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$record\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
+		-
+			message: "#^Access to an undefined property spitfire\\\\storage\\\\database\\\\Schema\\:\\:\\$removed\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
+		-
+			message: "#^Method ResourceModel\\:\\:definitions\\(\\) should return spitfire\\\\storage\\\\database\\\\Schema but return statement is missing\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
+		-
+			message: "#^Access to an undefined property ResourceModel\\:\\:\\$_id\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: bin/models/resource.php
+
