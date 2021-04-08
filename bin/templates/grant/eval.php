@@ -13,7 +13,7 @@
 					<form method="POST" action="">
 						<div class="row l2">
 							<div class="span l1" id="resources">
-								<input type="text" name="0[resources][]" class="frm-ctrl" placeholder="Resource...">
+								<input type="text" name="0[resource]" class="frm-ctrl" placeholder="Resource...">
 							</div>
 							<div class="span l1" id="identities">
 								<input type="text" name="0[identities][]" class="frm-ctrl" placeholder="Identity...">
@@ -22,7 +22,6 @@
 						<div class="spacer small"></div>
 						<div class="row l1">
 							<div class="span l1 align-right">
-								<a class="text:grey-500 no-decoration" href="#" id="add-resource">Add resource</a>
 								<a class="text:grey-500 no-decoration" href="#" id="add-identity">Add identity</a>
 								<input type="submit" class="button">
 							</div>
@@ -52,7 +51,7 @@
 					<?php $v = $result[0]; ?>
 					<div class="row l3 s3">
 						<div class="span l2 s2">
-							<span class="text:grey-200"><?= $result[0]->getPath() ?></span>
+							<span class="text:grey-200"><?= $v->getPath() ?></span>
 						</div>
 						<div class="span l1 s1">
 							<?php if ($v->getResult() == -1): ?>
@@ -62,6 +61,9 @@
 							<?php else: ?>
 							<span style="color: #090">Granted</span>
 							<?php endif; ?>
+							<span title="The specificity of the result">
+								(<?= strval($v->getSpecificity()) ?>)
+							</span>
 						</div>
 					</div>
 					<div class="spacer small"></div>

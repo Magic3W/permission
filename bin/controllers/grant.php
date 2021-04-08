@@ -176,21 +176,31 @@ class GrantController extends BaseController
 			 * Loop over the query that was sent.
 			 */
 			foreach ($_POST as $index => $query) {
-				$resources = collect($query['resources']);
-				$identities = collect($query['identities']);
 				
-				$result = $identities->reduce(function (PermissionTestResult $carry = null, $identity) use ($resources) {
+				if (count($query) !== 2) { 
+					throw new PublicException('Bad query: The query contains more keys than expected', 400);
+				}
+				
+				list($resource, $identities) = [$query['resource'], $query['identities']];
+				
+				if (!is_string($resource)) {
+					throw new PublicException('Bad query: The query submitted multiple resources. This is not permitted.', 400);
+				}
+				
+				$result = collect($identities)->reduce(function (PermissionTestResult $carry = null, $identity) use ($resource) {
 					
-					if ($carry && $carry->getResult() !== GrantModel::GRANT_INHERIT) { return $carry; }
+					/**
+					 * Perform the query to check whether the identity can access the resource.
+					 */
+					$result = PermissionHelper::unlock($resource, $identity);
 					
-					$results = PermissionHelper::unlockAll($resources, $identity);
-					$top = $results
-						->reduce(function (PermissionTestResult $c = null, PermissionTestResult $e) {
-							if (!$c) { return $e; }
-							else { return $c->compare($e); }
-						}, null);
-						
-					return $top;
+					/**
+					 * If the carry was just as specific or more, we keep that and continue testing the other
+					 * results.
+					 */
+					if ($carry && $carry->getSpecificity() >= $result->getSpecificity()) { return $carry; }
+					
+					return $result;
 				}, null);
 				
 				$_ret[$index] = $result;

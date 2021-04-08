@@ -40,14 +40,17 @@ class PermissionHelper
 		 * These are defaults, and therefore, the specificity is always 0. This means
 		 * that the rules are as generic as they get
 		 */
-		if ($id === true  || $id === 'true')  { return new PermissionTestResult(GrantModel::GRANT_ALLOW, null); }
-		if ($id === false || $id === 'false') { return new PermissionTestResult(GrantModel::GRANT_DENY, null); }
-		if ($id === null  || $id === 'null')  { return new PermissionTestResult(GrantModel::GRANT_INHERIT, null); }
+		if ($id === true  || $id === 'true')  { return new PermissionTestResult(true, $key, GrantModel::GRANT_ALLOW, null); }
+		if ($id === false || $id === 'false') { return new PermissionTestResult(false,$key, GrantModel::GRANT_DENY, null); }
+		if ($id === null  || $id === 'null')  { return new PermissionTestResult(null, $key, GrantModel::GRANT_INHERIT, null); }
 		
+		/**
+		 * Retrieve the identity
+		 */
+		$identity = db()->table('identity')->get('name', $id)->first();
 		$result = GrantModel::GRANT_INHERIT;
 		$pieces = explode('.', $key);
 		$resource = null;
-		$identity = db()->table('identity')->get('name', $id)->first();
 		
 		$specificity = null;
 		
@@ -59,7 +62,7 @@ class PermissionHelper
 			$resource = $query->first();
 			
 			if (!$resource) {
-				return new PermissionTestResult((int)$result, $specificity);
+				return new PermissionTestResult($identity->name, $key, (int)$result, $specificity);
 			}
 			
 			$grant = db()->table('grant')->get('identity', $identity)->where('resource', $resource)->first();
@@ -81,7 +84,7 @@ class PermissionHelper
 			
 		}
 		
-		return new PermissionTestResult((int)$result, $specificity);
+		return new PermissionTestResult($identity->name, $key, (int)$result, $specificity);
 	}
 	
 	public function unlockAll($key, $ids) 

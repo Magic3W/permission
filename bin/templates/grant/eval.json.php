@@ -24,5 +24,17 @@
  * THE SOFTWARE.
  */
 
+use permission\PermissionTestResult;
+
 current_context()->response->getHeaders()->contentType('json');
-echo json_encode($result);
+echo json_encode(collect($result)->each(function (PermissionTestResult $e) {
+	return [
+		'resource'    => $e->getPath(),
+		'identity'    => $e->getIdentity(),
+		'specificity' => $e->getSpecificity(),
+		'result'      => [
+			'string' => [-1 => 'denied', 0 => 'undefined', 1 => 'granted'][$e->getResult()],
+			'int' => $e->getResult()
+		]
+	];
+})->toArray());

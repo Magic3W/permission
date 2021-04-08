@@ -1,5 +1,8 @@
 <?php namespace permission;
 
+use IdentityModel;
+use ResourceModel;
+
 /* 
  * The MIT License
  *
@@ -29,16 +32,30 @@ class PermissionTestResult
 	
 	private $result;
 	
+	private $identity;
+	
+	/**
+	 * @var string
+	 */
+	private $specificity;
+	
 	/**
 	 *
-	 * @var \ResourceModel
+	 * @var string
 	 */
 	private $path;
 	
-	public function __construct($result, \ResourceModel $resource = null) 
+	public function __construct($identity, string $resource, $result, ResourceModel $specificity = null) 
 	{
 		$this->result = $result;
-		$this->path = $resource? $resource->path() : '';
+		$this->path = $resource;
+		$this->identity = $identity;
+		$this->specificity = $specificity? $specificity->path() : '';
+	}
+	
+	public function getIdentity() 
+	{
+		return $this->identity;
 	}
 	
 	public function getResult() 
@@ -50,18 +67,9 @@ class PermissionTestResult
 		return $this->path;
 	}
 	
-	public function compare(PermissionTestResult $to) : PermissionTestResult
+	public function getSpecificity() 
 	{
-		/**
-		 * If the incoming path does not contain this one, we assume that it's not 
-		 * overriding it.
-		 */
-		if (!\Strings::startsWith($to->getPath(), $this->getPath())) { return $this; }
-		
-		/**
-		 * If the paths match, we return the longer one.
-		 */
-		return strlen($to->getPath()) > strlen($this->getPath())? $to : $this;
+		return count(array_filter(explode('.', $this->specificity)));
 	}
 	
 }
