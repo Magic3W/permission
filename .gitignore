@@ -2,6 +2,8 @@ Documentation/*
 *.*~
 *.DS_STORE
 *.sublime-project
-
+.idea
 *.sublime-workspace
 /nbproject/private/
+/vendor/
+bin/settings/environments.php

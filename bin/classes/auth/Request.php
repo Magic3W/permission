@@ -1,6 +1,7 @@
 <?php namespace auth;
 
 use Exception;
+use spitfire\core\Environment;
 
 /**
  * The request class is in charge of properly establishing HTTP connections with 
@@ -62,6 +63,8 @@ class Request
 		
 		#Assemble the full URI
 		$url = $this->url;
+		if (Environment::get('debug_mode'))
+			$this->parameters['XDEBUG_SESSION_START'] = 'account';
 		if (!empty($this->parameters)) { $url.= '?' . http_build_query($this->parameters); }
 		
 		#Prepare the cURL request
@@ -79,7 +82,6 @@ class Request
 		
 		#If the request was not okay we will return an error
 		$http_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
 		if ($http_response_code !== 200) {
 			throw new Exception('SSO rejected the request (' . curl_error($ch) . ')', 1605141533);
 		}
